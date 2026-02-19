@@ -1,0 +1,58 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: claim-api-gateway
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+
+      routes:
+
+        # 1. Authentication (register & login) → no JWT required
+        - id: auth-route
+          uri: lb://claim-user-service
+          predicates:
+            - Path=/api/auth/**
+          filters:
+          # No JwtAuthGatewayFilter here
+
+        # 2. User management (get/update/delete profile) → JWT required
+        - id: user-route
+          uri: lb://claim-user-service
+          predicates:
+            - Path=/api/users/**
+
+
+        # 3. Claim submission & view (upload, list, download) → JWT required
+        - id: claim-submission-route
+          uri: lb://claim-submission-service
+          predicates:
+            - Path=/api/v1/claims/**
+
+
+        # 4. Fraud analysis results → JWT required
+        - id: fraud-analysis-route
+          uri: lb://claim-fraud-ai-service
+          predicates:
+            - Path=/api/fraud-analyses/**
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    com.fraudclaimdetector.claim_api_gateway: DEBUG

@@ -1,0 +1,43 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: claim-submission-service
+  data:
+    mongodb:
+      host: 127.0.0.1
+      port: 27017
+      database: fraud_claim_db
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add-type-headers: false
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+kafka:
+  topic:
+    name: contract-uploaded
+
+logging:
+  level:
+    root: INFO
+    com.fraudclaimdetector.claim_submission_service: DEBUG
+    org.springframework.kafka: DEBUG
+    org.springframework.data.mongodb: DEBUG
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true

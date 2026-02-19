@@ -1,0 +1,28 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: claim-user-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/claim_fraud_db
+    username: postgres
+    password: Kiran@2211               # ← change in production!
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    com.insuranceclaim.userservice: DEBUG
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
