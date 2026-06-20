@@ -458,23 +458,6 @@ mvn test
 cd claim-user-service
 mvn test -Dtest=AuthControllerTest
 
-# Run with coverage
-mvn verify
-
-# Integration tests
-mvn verify -Pintegration-tests
-<details> <summary><b>Test Coverage Report</b></summary>
-Service	Coverage
-User Service	87%
-Claim Service	82%
-AI Service	79%
-API Gateway	85%
-</details>
-🐳 Docker Deployment
-Docker Compose
-yaml
-version: '3.8'
-
 services:
   postgres:
     image: postgres:15
